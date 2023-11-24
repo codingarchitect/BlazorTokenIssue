@@ -1,0 +1,17 @@
+name: blazor-oidc
+services:
+  - name: api
+    project: WebApi/WebApi.csproj
+    bindings:
+      - port: 7262
+        protocol: https
+  - name: app
+    project: BlazorApp/BlazorApp.csproj
+    bindings:
+      - port: 7055
+        protocol: https
+  - name: identity
+    project: IdentityService/IdentityService.csproj
+    bindings:
+      - port: 5001
+        protocol: https
