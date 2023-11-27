@@ -6,7 +6,7 @@
 <AuthorizeView>
     <Authorized>
         <h1>Hello @context.User.FindFirstValue("name")</h1>
-        <div class="alert alert-warning">View the <a href="/weather">weather</a> endpoint for a remote API call</div>
+        <div class="alert alert-warning">View the <a href="/weather-int">weather interactive server</a> endpoint to test a remote API call with authentication</div>
         <h3>Claims:</h3>
         <dl>
             @foreach (var claim in context.User.Claims)

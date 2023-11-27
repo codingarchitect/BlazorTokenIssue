@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ namespace IdentityService
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
             {
-                new ApiResource("Web API")
+                new ApiResource("webapi")
                 {
                     Scopes =
                     {
@@ -61,6 +62,7 @@ namespace IdentityService
                         "profile",
                         "webapi",
                     },
+                    AccessTokenLifetime = (int)TimeSpan.FromDays(7).TotalSeconds,
                 }
             };
     }

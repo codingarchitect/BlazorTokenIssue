@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authentication
+@using BlazorApp.Services
+@inject TokenProvider TokenProvider
+@inject ILogger<App> Logger
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,3 +22,17 @@
 </body>
 
 </html>
+
+@code {
+
+    [CascadingParameter]
+    public HttpContext HttpContext { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TokenProvider.AccessToken = await HttpContext.GetTokenAsync("access_token");
+        TokenProvider.RefreshToken = await HttpContext.GetTokenAsync("refresh_token");
+        Logger.LogInformation("Token set in provider: {AccessToken}", TokenProvider.AccessToken);
+    }
+
+}

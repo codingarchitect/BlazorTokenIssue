@@ -1,0 +1,60 @@
+﻿@page "/weather-int"
+@using BlazorApp.Models
+@using BlazorApp.Services
+@inject WeatherForecastService WeatherForecastService
+@inject ILogger<WeatherInteractive> Logger
+@rendermode InteractiveServer
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (Exception != null)
+{
+    <div class="alert alert-danger">
+        <pre>@Exception.ToString()</pre>
+    </div>
+}
+
+<QuickGrid ItemsProvider="_gridItemsProvider" Pagination="_paginationState">
+    <PropertyColumn Property="@(static c => c.Summary)"></PropertyColumn>
+</QuickGrid>
+<Paginator State="_paginationState" />
+
+<button @onclick="() => _counter += 1">Test interactive behaviour: @_counter</button>
+
+@code {
+
+    private GridItemsProvider<WeatherForecast> _gridItemsProvider;
+
+    private PaginationState _paginationState = new()
+    {
+        ItemsPerPage = 10,
+    };
+
+    private Exception? Exception { get; set; }
+
+    private int _counter;
+
+    protected override void OnInitialized()
+    {
+        _gridItemsProvider = async request =>
+        {
+            try
+            {
+                var result = await WeatherForecastService.GetForecastAsync(request.StartIndex, request.Count ?? 10);
+                return GridItemsProviderResult.From(result.WeatherForecasts, result.Count);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Failed to load data");
+                Exception = ex;
+                StateHasChanged();
+                return GridItemsProviderResult.From(Array.Empty<WeatherForecast>(), 0);
+            }
+        };
+    }
+
+}

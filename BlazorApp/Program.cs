@@ -1,11 +1,21 @@
+using BlazorApp;
+using BlazorApp.Circuits;
 using BlazorApp.Components;
+using BlazorApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog(static (ctx, sp, cfg) => cfg
+    .ReadFrom.Services(sp)
+    .ReadFrom.Configuration(ctx.Configuration)
+    .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext}: {Message:lj}{NewLine}{Exception}"));
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -33,6 +43,18 @@ builder.Services.AddAuthentication(options =>
         options.GetClaimsFromUserInfoEndpoint = true;
     });
 
+builder.Services.AddTransient<AuthenticationStateHandler>();
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddHttpClient("weather")
+    .AddHttpMessageHandler<AuthenticationStateHandler>();
+
+builder.Services.AddScoped<TokenProvider>();
+builder.Services.AddScoped<WeatherForecastService>();
+
+builder.Services.AddCircuitServicesAccessor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,7 +73,10 @@ app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .RequireAuthorization()
+    .RequireAuthorization(new AuthorizeAttribute
+    {
+        AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme
+    })
     .AddInteractiveServerRenderMode();
 
 app.Run();
