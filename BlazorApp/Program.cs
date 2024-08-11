@@ -2,6 +2,7 @@ using BlazorApp;
 using BlazorApp.Circuits;
 using BlazorApp.Components;
 using BlazorApp.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,7 @@ builder.Services.AddAuthentication(options =>
         options.UsePkce = true;
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
+        options.SignedOutRedirectUri = "https://localhost:7055";
     });
 
 builder.Services.AddTransient<AuthenticationStateHandler>();
@@ -78,5 +80,10 @@ app.MapRazorComponents<App>()
         AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme
     })
     .AddInteractiveServerRenderMode();
+app.MapPost("/account/logout", async (HttpContext context) =>
+{
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    await context.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+});
 
 app.Run();
