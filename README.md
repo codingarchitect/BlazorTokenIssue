@@ -25,7 +25,7 @@ The following documentation was used to try and implement this behaviour:
 
 ## Test Solution
 
-This solution is comprised of 3 projects
+This solution is comprised of the following projects
 
 1. `WebApi` - This is a small Web API project that returns a set of weather
    forecasts. The service is configured to require an access token with the
