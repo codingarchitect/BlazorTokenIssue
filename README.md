@@ -36,10 +36,14 @@ This solution is comprised of 3 projects
    test users:
    * Alice - Username: `alice`, password: `alice`
    * Bob - Username: `bob`, password: `bob`
+   
+3. `SignalrServer` - This is a locally hosted SignalR. 
 
-3. `BlazorApp` - This is a .NET 8 Blazor App. There app is configured to require
+4. `BlazorApp` - This is a .NET 8 Blazor App. There app is configured to require
    authentication with OpenIDConnect, via `IdentityService`. The tokens are
    stored into the `TokenProvider` as showin in the documentation.
+   Flip `UseLocalSignalR` flag in the appsettings.json to use Azure SignalR. 
+   If using Azure SignalR, please make sure the connectionstring is configured in secrets.json
 
 ## Issues
 

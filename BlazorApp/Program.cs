@@ -36,6 +36,8 @@ builder.Services.AddAuthentication(options =>
         options.Authority = "https://localhost:5001";
         options.ClientId = "blazor-app";
         options.ClientSecret = "244c6179-9650-4f99-be2b-e2265cccef77";
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.SignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
         options.Scope.Clear();
         options.Scope.Add("openid");
         options.Scope.Add("profile");
@@ -47,6 +49,12 @@ builder.Services.AddAuthentication(options =>
         options.GetClaimsFromUserInfoEndpoint = true;
         options.SignedOutRedirectUri = "https://localhost:7055";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    // By default, all incoming requests will be authorized according to the default policy
+    options.FallbackPolicy = options.DefaultPolicy;
+});
 
 builder.Services.AddTransient<AuthenticationStateHandler>();
 
@@ -80,10 +88,10 @@ app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .RequireAuthorization(new AuthorizeAttribute
-    {
-        AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme
-    })
+    //.RequireAuthorization(new AuthorizeAttribute
+    //{
+    //    AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme
+    //})
     .AddInteractiveServerRenderMode();
 app.MapPost("/account/logout", async (HttpContext context) =>
 {

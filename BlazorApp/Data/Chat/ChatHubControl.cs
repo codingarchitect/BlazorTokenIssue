@@ -4,7 +4,7 @@ namespace BlazorApp.Data.Chat;
 
 public class ChatHubControl : Hub
 {
-    public const string __HubUrl = "/cerpchat";
+    public const string __HubUrl = "/chat";
 
     public async Task Broadcast(string username, string page) => await Clients.All.SendAsync("Broadcast", username, page);
 
