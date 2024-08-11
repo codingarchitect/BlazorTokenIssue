@@ -9,6 +9,10 @@
 
 <h1>Weather</h1>
 
+<MudContainer>
+    <BlazorApp.Components.Shared.ChatHub.ChatHubComponent />
+</MudContainer>
+
 <p>This component demonstrates showing data.</p>
 
 @if (Exception != null)
@@ -19,7 +23,7 @@
 }
 
 <QuickGrid ItemsProvider="_gridItemsProvider" Pagination="_paginationState">
-    <PropertyColumn Property="@(static c => c.Summary)"></PropertyColumn>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(static c => c.Summary)"></Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn>
 </QuickGrid>
 <Paginator State="_paginationState" />
 

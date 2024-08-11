@@ -1,0 +1,82 @@
+@inherits ChatHubComponentBase
+@if (DisableChat)
+{
+    <MudAlert Severity="Severity.Error">Order Chat has been disabled!</MudAlert>
+}
+else
+{
+    if (IsChatError)
+    {
+        <MudAlert Severity="Severity.Error">@ChatErrorMessage</MudAlert>
+    }
+    else
+    {
+        if (NoMessages)
+        {
+            <MudAlert Severity="Severity.Info">No other pages being worked on.</MudAlert>
+        }
+        else
+        {
+            if (IsReloadingMessages)
+            {
+                <div class="row">
+                    <div class="col col-md-3"> <MudProgressCircular Color="Color.Primary" Indeterminate="true" /></div>
+                    <div class="col col-md-3"><span>@CallingUsername</span> working on <span>@CallingPage</span></div>
+                </div>
+
+            }
+            else
+            {
+                <MudSimpleTable Style="overflow-x: auto;" Dense="true" Bordered="true" Striped="true">
+                    <thead>
+                        <tr>
+                            <th class="thMessage thFont">Page</th>
+                            <th class="thUser thFont">User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var message in Messages)
+                        {
+                            if (IsLicensingConflict(message))
+                            {
+                                <tr class="table-danger">
+                                    <td><span class="message">@message.Page</span></td>
+                                    <td><span class="user">@message.Username</span></td>
+                                    <td class="text-center">
+                                        @if (!message.IsAllowed)
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error" />
+                                        }
+                                        else
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Info" />
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td><span class="message">@message.Page</span></td>
+                                    <td><span class="user">@message.Username</span></td>
+                                    <td class="text-center">
+                                        @if (!message.IsAllowed)
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.Edit" Color="Color.Error" />
+                                        }
+                                        else
+                                        {
+                                            <MudIcon Icon="@Icons.Material.Filled.Preview" Color="Color.Info" />
+                                        }
+                                    </td>
+                                </tr>
+
+                            }
+
+                        }
+                    </tbody>
+                </MudSimpleTable>
+            }
+        }
+    }
+}

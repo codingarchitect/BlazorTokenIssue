@@ -1,4 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorApp.Data
+@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<MudThemeProvider />
+<MudPopoverProvider />
 
 <div class="page">
     <div class="sidebar">
@@ -21,10 +26,11 @@
                 </Authorized>
             </AuthorizeView>
         </div>
-        
-        <article class="content px-4">
-            @Body
-        </article>
+        <CascadingValue Name="UserData" Value="@UserData">
+            <article class="content px-4">
+                @Body
+            </article>
+        </CascadingValue>
     </main>
 </div>
 
@@ -33,3 +39,55 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    UserData UserData { get; set; } = new UserData();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetClaimsPrincipalData();
+    }
+
+    private async Task GetClaimsPrincipalData()
+    {
+        //TODO ensure better propagation of logged in user state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user == null || user.Identity == null)
+        {
+            return;
+        }
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var email = user.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            string displayName = user.Claims.FirstOrDefault(x => x.Type == "name").Value;
+
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return;
+            }
+
+            var claimsList = new List<string>();
+
+            // Iterate through each claim in the user's identity
+            foreach (var claim in user.Claims)
+            {
+                // Format each claim as "Type: Value"
+                claimsList.Add($"{claim.Type}: {claim.Value}");
+            }
+
+            var username = email?.Split('@')[0]!;
+
+            UserData = new UserData
+                {
+                    DisplayName = displayName,
+                    Email = email,
+                    Username = username,
+                    UserClaims = user.Claims.ToList()
+                };
+        }
+    }
+}

@@ -5,6 +5,9 @@
 
 <AuthorizeView>
     <Authorized>
+        <MudContainer>
+            <BlazorApp.Components.Shared.ChatHub.ChatHubComponent />
+        </MudContainer>
         <h1>Hello @context.User.FindFirstValue("name")</h1>
         <div class="alert alert-warning">View the <a href="/weather-int">weather interactive server</a> endpoint to test a remote API call with authentication</div>
         <h3>Claims:</h3>

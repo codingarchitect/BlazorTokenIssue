@@ -3,19 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{D172D2F5-E51A-4536-8491-0CE42B1329A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{D172D2F5-E51A-4536-8491-0CE42B1329A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "IdentityService\IdentityService.csproj", "{AFD1E075-75A4-4E09-A8C9-E65405B7CC01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityService", "IdentityService\IdentityService.csproj", "{AFD1E075-75A4-4E09-A8C9-E65405B7CC01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{507C1064-A215-4292-A085-2CCD282FC33D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{507C1064-A215-4292-A085-2CCD282FC33D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalrServer", "SignalrServer\SignalrServer.csproj", "{758C7E5A-C1EA-4979-865E-2E4CDE55EECB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D172D2F5-E51A-4536-8491-0CE42B1329A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +29,12 @@ Global
 		{507C1064-A215-4292-A085-2CCD282FC33D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{507C1064-A215-4292-A085-2CCD282FC33D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{507C1064-A215-4292-A085-2CCD282FC33D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758C7E5A-C1EA-4979-865E-2E4CDE55EECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758C7E5A-C1EA-4979-865E-2E4CDE55EECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758C7E5A-C1EA-4979-865E-2E4CDE55EECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758C7E5A-C1EA-4979-865E-2E4CDE55EECB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

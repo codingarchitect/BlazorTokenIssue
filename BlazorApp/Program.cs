@@ -1,12 +1,15 @@
 using BlazorApp;
 using BlazorApp.Circuits;
 using BlazorApp.Components;
+using BlazorApp.Data.Chat;
 using BlazorApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
+using MudBlazor.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +59,8 @@ builder.Services.AddScoped<TokenProvider>();
 builder.Services.AddScoped<WeatherForecastService>();
 
 builder.Services.AddCircuitServicesAccessor();
+builder.Services.AddMudServices();
+builder.Services.AddSignalRService(builder.Configuration);
 
 var app = builder.Build();
 
@@ -85,5 +90,6 @@ app.MapPost("/account/logout", async (HttpContext context) =>
     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     await context.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
 });
+app.MapHub<ChatHubControl>(ChatHubControl.__HubUrl);
 
 app.Run();
